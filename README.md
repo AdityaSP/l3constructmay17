@@ -1,12 +1,8 @@
-# Welcome to your CDK TypeScript Construct Library project
+# Submit the build to a package registry
+## npm login
+* `npm login` Logs into npm by opening up a browser to enter npm creds
+* `npm run build` Comples the ts code to js code. Refer package.json
 
-You should explore the contents of this project. It demonstrates a CDK Construct Library that includes a construct (`S3WithAlert`)
-which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
+* `npm publish` Takes the compiled project and pushes it further to npm registry for GA
 
-The construct defines an interface (`S3WithAlertProps`) to configure the visibility timeout of the queue.
-
-## Useful commands
-
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
+### Note: update version number in package.json for every new release to package registry

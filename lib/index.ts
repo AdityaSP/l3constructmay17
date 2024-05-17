@@ -1,21 +1,39 @@
-// import * as cdk from 'aws-cdk-lib';
+import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 export interface S3WithAlertProps {
-  // Define construct properties here
+  bucketName :string
 }
 
 export class S3WithAlert extends Construct {
 
-  constructor(scope: Construct, id: string, props: S3WithAlertProps = {}) {
+  bucket :cdk.aws_s3.Bucket
+
+  constructor(scope: Construct, id: string, props: S3WithAlertProps) {
     super(scope, id);
-
-    // Define construct contents here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'S3WithAlertQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+      const alertLamName = cdk.Fn.importValue("alter-lambda-name");
+      const lam = cdk.aws_lambda.Function.fromFunctionName(
+      this,
+      "loadlambda",
+      alertLamName
+    );
+         const mys3 = new cdk.aws_s3.Bucket(this, props.bucketName, {
+           removalPolicy: cdk.RemovalPolicy.DESTROY,
+           autoDeleteObjects: true
+         });
+         this.bucket=mys3
+       mys3.addEventNotification(
+         cdk.aws_s3.EventType.OBJECT_CREATED,
+         new cdk.aws_s3_notifications.LambdaDestination(lam)
+       );
+       mys3.addEventNotification(
+         cdk.aws_s3.EventType.OBJECT_REMOVED,
+         new cdk.aws_s3_notifications.LambdaDestination(lam)
+       );
   }
+  getBucket(){
+    return this.bucket
+  }
+
 }

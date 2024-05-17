@@ -1,6 +1,6 @@
 {
-  "name": "s3with_alert",
-  "version": "0.1.0",
+  "name": "s3withalert",
+  "version": "0.2.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
